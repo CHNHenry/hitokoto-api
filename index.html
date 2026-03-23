@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Hitokoto API</title>
+    <style>
+        body { font-family: system-ui; max-width: 800px; margin: 50px auto; padding: 20px; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; }
+        .endpoint { background: #2d2d2d; color: #fff; padding: 15px; border-radius: 8px; margin: 10px 0; }
+        .demo { background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>🎯 Hitokoto API</h1>
+    <p>基于 GitHub Pages 的静态一言 API</p>
+    
+    <h2>API 端点</h2>
+    <div class="endpoint">
+        <strong>GET</strong> <code>https://你的用户名.github.io/hitokoto-api/hitokoto.json</code>
+    </div>
+    
+    <h2>使用示例</h2>
+    <pre><code>// 前端随机获取
+fetch('https://你的用户名.github.io/hitokoto-api/hitokoto.json')
+  .then(r => r.json())
+  .then(data => {
+    const random = data[Math.floor(Math.random() * data.length)];
+    console.log(random.content);
+  });</code></pre>
+
+    <div class="demo">
+        <h3>🎲 随机演示</h3>
+        <p id="quote">点击按钮获取一言...</p>
+        <small id="from"></small><br>
+        <button onclick="getRandom()">随机获取</button>
+    </div>
+
+    <script>
+        let hitokotoData = [];
+        
+        // 加载数据
+        fetch('./hitokoto.json')
+            .then(r => r.json())
+            .then(data => hitokotoData = data);
+            
+        function getRandom() {
+            if (!hitokotoData.length) return;
+            const item = hitokotoData[Math.floor(Math.random() * hitokotoData.length)];
+            document.getElementById('quote').textContent = item.content;
+            document.getElementById('from').textContent = '—— ' + item.from;
+        }
+    </script>
+</body>
+</html>
